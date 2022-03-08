@@ -1,6 +1,7 @@
 import re
 from urllib.request import urlopen
 
+
 # f = urlopen("http://www.yo-yoo.co.il/data/game/solutions/")
 # objects = str(f.read())
 
@@ -9,6 +10,8 @@ for i in range(8):
         
         f= urlopen('https://www.yo-yoo.co.il/data/game/c/'+str(i)+'/'+str(chr(l)))
         objects = str(f.read())
+        p=re.compile("(?i)<td[^>]*>", "")
+        re.search(p,f)
 # print(objects)
 #for obj in list(objects):
    # article = obj['content']
