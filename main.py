@@ -1,10 +1,10 @@
-
 from turtle import screensize,circle, window_height
 from pickle import TRUE
 import pygame
 import time
 import random
 import sys
+
 # windowsize
 WINDOW_W=1000
 WINDOW_H=702
@@ -43,6 +43,7 @@ game_time=clock.get_time()
 print(game_time)
 mouse_position=(0,0)
 ארץ=()
+space_touch=0
 
 
 while start:
@@ -66,9 +67,11 @@ while start:
         mouse_position = pygame.mouse.get_pos()
     elif event.type==pygame.KEYDOWN:
       if event.key==pygame.K_SPACE:
-        print("space")
+        # print("space")
         latter_font=myfont.render(str(lottery_latter),True,(0,0,0))
-        screen.blit(latter_font,(922, 158))
+        space_touch+=1
+    if space_touch>0:  
+      screen.blit(latter_font,(922, 158))
 #  screen.blit(latter_font,(922, 158))      
  screen.blit(cursor_image,(mouse_position[0]-size_x_cursor/2,mouse_position[1]-10))
  
