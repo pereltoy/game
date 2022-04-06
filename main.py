@@ -34,9 +34,7 @@ myfont=pygame.font.SysFont("fhir",30,50)
 lottery_latter=random.choice(latters)
 # latter_font=myfont.render(str(lottery_latter),True,(0,0,0))
 
-
-
-
+latter_font=[]
 start=True
 clock=pygame.time.Clock()
 game_time=clock.get_time()
@@ -49,30 +47,23 @@ space_touch=0
 while start:
  screen.blit(bk_image,(0,0))
  screen.blit(write_image,(0,500))
-
-
-
- if game_time==1200:
-   start=False
- clock.tick(1)
- game_time=clock.get_time()
-#  print(game_time)
-
-
  for event in pygame.event.get():
     print (event)
     if event.type==pygame.QUIT:
       start=False
+      (805, 146)
+      (899, 185)
     if event.type==pygame.MOUSEMOTION:
         mouse_position = pygame.mouse.get_pos()
     elif event.type==pygame.KEYDOWN:
       if event.key==pygame.K_SPACE:
-        # print("space")
-        latter_font=myfont.render(str(lottery_latter),True,(0,0,0))
+        lottery_latter=random.choice(latters)
+        latter_font.append[myfont.render(str(lottery_latter),True,(110,220,34))]
+        latters.remove(lottery_latter)
         space_touch+=1
-    if space_touch>0:  
-      screen.blit(latter_font,(922, 158))
-#  screen.blit(latter_font,(922, 158))      
+ if space_touch>0:  
+    screen.blit(latter_font,(922, 158))
+      
  screen.blit(cursor_image,(mouse_position[0]-size_x_cursor/2,mouse_position[1]-10))
  
  

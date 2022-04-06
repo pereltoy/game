@@ -5,13 +5,14 @@ from urllib.request import urlopen
 # f = urlopen("http://www.yo-yoo.co.il/data/game/solutions/")
 # objects = str(f.read())
 
-for i in range(8):
-    for l in range(40,50):
-        
-        f= urlopen('https://www.yo-yoo.co.il/data/game/c/'+str(i)+'/'+str(chr(l)))
+for i in range(1,8):
+    for l in ["א","ב","ג","ד","ה","ו","ז","ח","ט","י","כ","ל","מ","נ","ס","ע","פ","צ","ק","ר","ש","ת"]:
+        url='https://www.yo-yoo.co.il/data/game/c/'+str(i)+'/'+l.decode('UTF-8')
+        f= urlopen(url)
         objects = str(f.read())
-        p=re.compile("(?i)<td[^>]*>", "")
-        re.search(p,f)
+        # p=re.compile("(?i)<td[^>]*>")
+        a=re.match("(?i)<td[^>]*>",objects)
+        print(a)
 # print(objects)
 #for obj in list(objects):
    # article = obj['content']
