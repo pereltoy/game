@@ -13,6 +13,7 @@ size_x_cursor=70
 
 
 pygame.init()
+clock = pygame.time.Clock()
 pygame.font.init()
 
 screen = pygame.display.set_mode(WINDOW_SIZE)
@@ -33,12 +34,12 @@ Latters=["א","ב","ג","ד","ה","ו","ז","ח","ט","י","כ","ל","מ","נ","
 myfont=pygame.font.SysFont("fhir",30,50)
 lottery_latter=random.choice(latters)
 # latter_font=myfont.render(str(lottery_latter),True,(0,0,0))
-
+current_time=0
 latter_font=[]
 start=True
-clock=pygame.time.Clock()
-game_time=clock.get_time()
-print(game_time)
+
+
+
 mouse_position=(0,0)
 ארץ=()
 space_touch=0
@@ -57,18 +58,82 @@ while start:
         mouse_position = pygame.mouse.get_pos()
     elif event.type==pygame.KEYDOWN:
       if event.key==pygame.K_SPACE:
+        pygame.time.get_ticks()
         lottery_latter=random.choice(latters)
-        latter_font.append[myfont.render(str(lottery_latter),True,(110,220,34))]
+        latters_font =myfont.render(str(lottery_latter),True,(110,220,34))
+        latter_font.append(latters_font)
         latters.remove(lottery_latter)
         space_touch+=1
  if space_touch>0:  
-    screen.blit(latter_font,(922, 158))
+    screen.blit(latter_font[0],(592,410))
       
  screen.blit(cursor_image,(mouse_position[0]-size_x_cursor/2,mouse_position[1]-10))
  
  
  pygame.display.flip()
  
+down=42
+left=110
+position=[158,200,242,284,326,368,410,452]
+position2=[922,855,812,702,592,482,372,262,152]
+a=158
+for i in range(7):
+    for t in range(8):
+        print(position2[t],position[i])
 
 
-pygame.quit
+(922, 200)pygame.quit
+922,158
+855,158
+812,158
+702,158
+592,158
+482,158
+372,158
+262,158
+922,200
+855,200
+812,200
+702,200
+592,200
+482,200
+372,200
+262,200
+922,242
+855,242
+812,242
+702,242
+592,242
+482,242
+372,242
+262,242
+922,284
+855,284
+812,284
+702,284
+592,284
+482,284
+372,284
+262,284
+922,326
+855,326
+812,326
+702,326
+592,326
+482,326
+372,326
+262,326
+922,368
+855,368
+812,368
+702,368
+592,368
+482,368
+372,368
+262,368
+922,410
+855,410
+812,410
+702,410
+(592,410),(482,410),(372,410),(262,410)
+2040
