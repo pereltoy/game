@@ -82,14 +82,14 @@ while start:
  
  pygame.display.flip()
  
-down=42
-left=110
-position=[158,200,242,284,326,368,410,452]
-position2=[922,855,812,702,592,482,372,262,152]
-a=158
-for i in range(7):
-    for t in range(8):
-        print(position2[t],position[i])
+# down=42
+# left=110
+# position=[158,200,242,284,326,368,410,452]
+# position2=[922,855,812,702,592,482,372,262,152]
+# a=158
+# for i in range(7):
+#     for t in range(8):
+#         print(position2[t],position[i])
 
 
 
