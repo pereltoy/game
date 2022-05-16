@@ -1,3 +1,4 @@
+from pickle import FALSE
 import cv2
 import mediapipe as mp
 
@@ -22,8 +23,8 @@ mp_hands = mp.solutions.hands
 # For static images:
 IMAGE_FILES = []
 with mp_hands.Hands(
-    static_image_mode=True,
-    max_num_hands=4,
+    static_image_mode=FALSE,
+    max_num_hands=2,
     min_detection_confidence=0.5) as hands:
   for idx, file in enumerate(IMAGE_FILES):
     # Read an image, flip it around y-axis for correct handedness output (see
@@ -41,10 +42,11 @@ with mp_hands.Hands(
     for hand_landmarks in results.multi_hand_landmarks:
       print('hand_landmarks:', hand_landmarks)
       print(
-          f'Index finger tip coordinates: (',
+          f'(image_width/2,image_height/2 )'  
           f'{hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].x * image_width}, '
           f'{hand_landmarks.landmark[mp_hands.HandLandmark.INDEX_FINGER_TIP].y * image_height})'
       )
+      
       mp_drawing.draw_landmarks(
           annotated_image,
           hand_landmarks,
@@ -78,6 +80,8 @@ with mp_hands.Hands(
     image.flags.writeable = False
     image = cv2.cvtColor(image, cv2.COLOR_BGR2RGB)
     results = hands.process(image)
+    
+
 
     # Draw the hand annotations on the image.
     image.flags.writeable = True
