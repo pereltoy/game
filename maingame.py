@@ -1,3 +1,4 @@
+
 from tracemalloc import stop
 from turtle import window_height, window_width
 import pygame
@@ -27,6 +28,7 @@ cursor_image=pygame.transform.scale(cursor_image,(70,40))
 lotteryfont = pygame.font.SysFont('david', 80)
 lattersfont=pygame.font.SysFont('david', 24)
 writtingfont=pygame.font.SysFont('david', 30)
+deletefont=pygame.font.SysFont('jacob',25)
 latters=["א","ב","ג","ד","ה","ו","ז","ח","ט","י","כ","ל","מ","נ","ס","ע","פ","צ","ק","ר","ש","ת"]
 keyboardLatters=["א","ב","ג","ד","ה","ו","ז","ח","ט","י","כ","ל","מ","נ","ס","ע","פ","צ","ק","ר","ש","ת","ף","ץ","ך","ם"]
 
@@ -41,7 +43,8 @@ def mouse_click_pos_latter (y_mouse_pos,l):
             if l==i:
                 return keyboardLatters[len(keyboardLatters)-l-1]
 
-
+deleteletter="delete"
+eraser = deletefont.render(deleteletter, False, (255, 255, 255))
 pos=None
 lottery_latter=None
 latter_font=None
@@ -51,6 +54,7 @@ latter_pos=-1
 running = True
 writtinglatter=""
 screenword=None
+
 while running:
     # Fill the background with white
     screen.fill((0, 0, 0))
@@ -61,12 +65,12 @@ while running:
             pos = pygame.mouse.get_pos()
             x_mouse=pos[0]
             y_mouse_pos=pos[1]
-            l=(x_mouse-15)//42
-            
+            l=(x_mouse-15)//42            
             word = mouse_click_pos_latter(y_mouse_pos,l)
-            
             writtinglatter=word+writtinglatter
-            
+            if x_mouse>1040 and x_mouse<1100 and y_mouse_pos<550 and y_mouse_pos>537:
+              
+                writtinglatter-=writtinglatter           
             screenword=writtingfont.render(writtinglatter,True,(5,200,100))
            # writtinglatter+= stop
         if event.type == pygame.QUIT:
@@ -77,6 +81,7 @@ while running:
                 # lottery_latter = unicode(lottery_latter,  "Windows-1255")
                 text_surface = lotteryfont.render(lottery_latter, False, (255, 255, 255))
                 # llottery=myfont.render(str(lottery_latter),True,(0,0,0))
+    screen.blit(eraser,(1040,537))
  
     if lottery_latter!=None:
        screen.blit(text_surface,(WINDOW_W//2,100))

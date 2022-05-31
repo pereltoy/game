@@ -35,7 +35,7 @@ cursor_image=pygame.transform.scale(cursor_image,(size_x_cursor,40))
 
 latters=["א","ב","ג","ד","ה","ו","ז","ח","ט","י","כ","ל","מ","נ","ס","ע","פ","צ","ק","ר","ש","ת"]
 Latters=["א","ב","ג","ד","ה","ו","ז","ח","ט","י","כ","ל","מ","נ","ס","ע","פ","צ","ק","ר","ש","ת","ף","ץ","ך","ם"]
-myfont=pygame.font.SysFont("fhir",30,70)
+myfont=pygame.font.SysFont("david",30,70)
 # lottery_latter=random.choice(latters)
 # latter_font=myfont.render(str(lottery_latter),True,(0,0,0))
 current_time=0
