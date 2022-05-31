@@ -37,7 +37,7 @@ def mouse_click_pos_latter (y_mouse_pos,l):
     global keyboardLatters
     print(y_mouse_pos)
     if y_mouse_pos<550 or y_mouse_pos>572:
-        return None
+        return ""
     if y_mouse_pos>550 and y_mouse_pos<572:
         for i in range (len(keyboardLatters)):
             if l==i:
@@ -70,7 +70,7 @@ while running:
             writtinglatter=word+writtinglatter
             if x_mouse>1040 and x_mouse<1100 and y_mouse_pos<550 and y_mouse_pos>537:
               
-                writtinglatter-=writtinglatter           
+                writtinglatter=""          
             screenword=writtingfont.render(writtinglatter,True,(5,200,100))
            # writtinglatter+= stop
         if event.type == pygame.QUIT:
