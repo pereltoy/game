@@ -1,3 +1,4 @@
+from tracemalloc import stop
 from turtle import window_height, window_width
 import pygame
 import time
@@ -25,18 +26,20 @@ write_image=pygame.transform.scale(write_image,(1000,220))
 cursor_image=pygame.transform.scale(cursor_image,(70,40))
 lotteryfont = pygame.font.SysFont('david', 80)
 lattersfont=pygame.font.SysFont('david', 24)
+writtingfont=pygame.font.SysFont('david', 30)
 latters=["א","ב","ג","ד","ה","ו","ז","ח","ט","י","כ","ל","מ","נ","ס","ע","פ","צ","ק","ר","ש","ת"]
 keyboardLatters=["א","ב","ג","ד","ה","ו","ז","ח","ט","י","כ","ל","מ","נ","ס","ע","פ","צ","ק","ר","ש","ת","ף","ץ","ך","ם"]
 
 
-def mouse_click_pos_latter (pos,l):
+def mouse_click_pos_latter (y_mouse_pos,l):
     global keyboardLatters
-    if pos<550 or pos>572:
+    print(y_mouse_pos)
+    if y_mouse_pos<550 or y_mouse_pos>572:
         return None
-    else:
+    if y_mouse_pos>550 and y_mouse_pos<572:
         for i in range (len(keyboardLatters)):
             if l==i:
-                return keyboardLatters[i]
+                return keyboardLatters[len(keyboardLatters)-l-1]
 
 
 pos=None
@@ -46,6 +49,8 @@ step=WINDOW_W//len(keyboardLatters)
 latter_pos=-1
 # Run until the user asks to quit
 running = True
+writtinglatter=""
+screenword=None
 while running:
     # Fill the background with white
     screen.fill((0, 0, 0))
@@ -55,9 +60,15 @@ while running:
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
             x_mouse=pos[0]
-            pos=pos[1]
-            l=x_mouse-15//42
-            mouse_click_pos_latter(pos,l)
+            y_mouse_pos=pos[1]
+            l=(x_mouse-15)//42
+            
+            word = mouse_click_pos_latter(y_mouse_pos,l)
+            
+            writtinglatter=word+writtinglatter
+            
+            screenword=writtingfont.render(writtinglatter,True,(5,200,100))
+           # writtinglatter+= stop
         if event.type == pygame.QUIT:
             running = False
         elif event.type==pygame.KEYDOWN:
@@ -66,11 +77,11 @@ while running:
                 # lottery_latter = unicode(lottery_latter,  "Windows-1255")
                 text_surface = lotteryfont.render(lottery_latter, False, (255, 255, 255))
                 # llottery=myfont.render(str(lottery_latter),True,(0,0,0))
-    print(mouse_click_pos_latter)
+ 
     if lottery_latter!=None:
        screen.blit(text_surface,(WINDOW_W//2,100))
-
-    
+    if screenword!=None:
+        screen.blit(screenword,(WINDOW_W//2,WINDOW_H//2))
     for l in range(len(keyboardLatters)):
         img=lattersfont.render(keyboardLatters[len(keyboardLatters)-l-1],True,(5,200,100))
         screen.blit(img,(15+l*42,550))
