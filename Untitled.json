@@ -1,5 +1,4 @@
-[
-    {
+[{
         "char": "a",
         "type": 1,
         "words": [
@@ -11,6 +10,164 @@
         "type": 1,
         "words": [
             "betu"
+        ]
+    }, {
+        "char": "c",
+        "type": 1,
+        "words": [
+            "armeny"
+        ]
+    },
+    {
+        "char": "d",
+        "type": 1,
+        "words": [
+            "betu"
+        ]
+    }, {
+        "char": "e",
+        "type": 1,
+        "words": [
+            "armeny"
+        ]
+    },
+    {
+        "char": "f",
+        "type": 1,
+        "words": [
+            "betu"
+        ]
+    }, {
+        "char": "g",
+        "type": 1,
+        "words": [
+            "armeny"
+        ]
+    },
+    {
+        "char": "h",
+        "type": 1,
+        "words": [
+            "betu"
+        ]
+    },
+    {
+        "char": "i",
+        "type": 1,
+        "words": [
+            "armeny"
+        ]
+    },
+    {
+        "char": "j",
+        "type": 1,
+        "words": [
+            "betu"
+        ]
+    }, {
+        "char": "k",
+        "type": 1,
+        "words": [
+            "armeny"
+        ]
+    },
+    {
+        "char": "l",
+        "type": 1,
+        "words": [
+            "betu"
+        ]
+    }, {
+        "char": "m",
+        "type": 1,
+        "words": [
+            "armeny"
+        ]
+    },
+    {
+        "char": "n",
+        "type": 1,
+        "words": [
+            "betu"
+        ]
+    }, {
+        "char": "o",
+        "type": 1,
+        "words": [
+            "armeny"
+        ]
+    },
+    {
+        "char": "p",
+        "type": 1,
+        "words": [
+            "betu"
+        ]
+    },
+    {
+        "char": "q",
+        "type": 1,
+        "words": [
+            "betu"
+        ]
+    }, {
+        "char": "r",
+        "type": 1,
+        "words": [
+            "armeny"
+        ]
+    },
+    {
+        "char": "s",
+        "type": 1,
+        "words": [
+            "betu"
+        ]
+    },
+    {
+        "char": "t",
+        "type": 1,
+        "words": [
+            "armeny"
+        ]
+    },
+    {
+        "char": "u",
+        "type": 1,
+        "words": [
+            "betu"
+        ]
+    }, {
+        "char": "v",
+        "type": 1,
+        "words": [
+            "armeny"
+        ]
+    },
+    {
+        "char": "w",
+        "type": 1,
+        "words": [
+            "betu"
+        ]
+    }, {
+        "char": "x",
+        "type": 1,
+        "words": [
+            "armeny"
+        ]
+    },
+    {
+        "char": "y",
+        "type": 1,
+        "words": [
+            "betu"
+        ]
+    }, {
+        "char": "z",
+        "type": 1,
+        "words": [
+            "armeny"
         ]
     }
 ]

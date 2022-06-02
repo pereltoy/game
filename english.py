@@ -74,8 +74,17 @@ running = True
 writtinglatter = ""
 screenword = None
 submittedwords = []
-finger13_y = 0
-finger13_x = 0
+finger12_y = 0
+finger12_x = 0
+finger16_y = None
+finger13_y = None
+finger17_y = None
+finger20_y = None
+finger3_x = None
+finger4_x = None
+finger8_y = None
+finger5_y = None
+finger9_y = None
 cursor_x = 0
 cursor_y = 550
 
@@ -100,8 +109,17 @@ while running:
                                       mp_hands.HAND_CONNECTIONS,
                                       mp_drawing_styles.get_default_hand_landmarks_style(),
                                       mp_drawing_styles.get_default_hand_connections_style())
+            finger12_y = results.multi_hand_landmarks[0].landmark[12].y
+            finger16_y = results.multi_hand_landmarks[0].landmark[16].y
+            finger20_y = results.multi_hand_landmarks[0].landmark[20].y
+            finger8_y = results.multi_hand_landmarks[0].landmark[8].y
+            finger4_x = results.multi_hand_landmarks[0].landmark[4].x
             finger13_y = results.multi_hand_landmarks[0].landmark[13].y
-            finger13_x = results.multi_hand_landmarks[0].landmark[13].x
+            finger9_y = results.multi_hand_landmarks[0].landmark[9].y
+            finger5_y = results.multi_hand_landmarks[0].landmark[5].y
+            finger17_y = results.multi_hand_landmarks[0].landmark[17].y
+            finger3_x = results.multi_hand_landmarks[0].landmark[3].x
+            finger12_x = results.multi_hand_landmarks[0].landmark[12].x
 
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -148,6 +166,13 @@ while running:
     pygame.draw.line(screen, (255, 255, 255),
                      (WINDOW_W//2, 80), (WINDOW_W//2, 480), 10)
     pygame.draw.line(screen, (255, 255, 255), (200, 140), (900, 140), 10)
+    if finger16_y <= finger13_y and finger17_y >= finger20_y and finger8_y <= finger5_y and finger12_y <= finger9_y and finger4_x <= finger3_x and finger3_x != None:
+        cursor_x = x_mouse
+        cursor_y = y_mouse_pos
+        l = x_mouse//42
+        word = mouse_click_pos_latter(y_mouse_pos, l)
+        writtinglatter += word
+        screenword = writtingfont.render(writtinglatter, True, (0, 0, 255))
     if lottery_latter != None:
         screen.blit(letterscreen, (600, 200))
     if screenword != None:
@@ -156,16 +181,16 @@ while running:
         img = lattersfont.render(keyboardLatters[l], True, (5, 200, 100))
         screen.blit(img, (15+l*42, 550))
     screen.blit(cursor_image, (cursor_x, cursor_y))
-    if finger13_y > 0.85 and finger13_y < 1:
+    if finger12_y > 0.85 and finger12_y < 1:
         cursor_x = 0
         cursor_y = 550
-    elif finger13_y > 0.15 and finger13_y > 0:
+    if finger12_y > 0.15 and finger12_y > 0:
         cursor_x = 1050
         cursor_y = 535
 
-    if finger13_x < 1 and finger13_x > 0.85 and cursor_x > 15:
+    if finger12_x < 1 and finger12_x > 0.85 and cursor_x > 15:
         cursor_x -= 42
-    if finger13_x < 0.15 and finger13_x > 0 and cursor_x < 1050:
+    if finger12_x < 0.15 and finger12_x > 0 and cursor_x < 1050:
         cursor_x += 42
 
         # if
@@ -174,7 +199,7 @@ while running:
         #         for word in i["words"]:
         #             if word==submittedwords[0]:
         #                 print ("good job")
-    # cv2.imshow("my ugly face", cv2.flip(frame, 1))
+    cv2.imshow("my ugly face", cv2.flip(frame, 1))
     if cv2.waitKey(1) & 0xff == ord("q"):
         break
 
