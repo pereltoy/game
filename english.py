@@ -174,7 +174,7 @@ while running:
         #         for word in i["words"]:
         #             if word==submittedwords[0]:
         #                 print ("good job")
-    cv2.imshow("my ugly face", cv2.flip(frame, 1))
+    # cv2.imshow("my ugly face", cv2.flip(frame, 1))
     if cv2.waitKey(1) & 0xff == ord("q"):
         break
 
