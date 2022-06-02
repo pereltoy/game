@@ -6,6 +6,7 @@ import random
 import cv2
 import json
 import mediapipe as mp
+import time
 
 
 # windowsize
@@ -39,17 +40,22 @@ latters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l",
            "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
 keyboardLatters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
                    "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+# finger12_y = None
+# finger12_x = None
+# finger16_y = None
+# finger13_y = None
+# finger17_y = None
+# finger20_y = None
+# finger3_x = None
+# finger4_x = None
+# finger8_y = None
+# finger5_y = None
+# finger9_y = None
+hand_landmarks=None
+writtinglatter = ""
 
 
-def mouse_click_pos_latter(y_mouse_pos, l):
-    global keyboardLatters
-    print(y_mouse_pos)
-    if y_mouse_pos < 550 or y_mouse_pos > 572:
-        return ""
-    if y_mouse_pos > 550 and y_mouse_pos < 572:
-        for i in range(len(keyboardLatters)):
-            if l == i:
-                return keyboardLatters[i]
+
 
 
 deleteletter = "delete"
@@ -71,22 +77,66 @@ step = WINDOW_W//len(keyboardLatters)
 latter_pos = -1
 # Run until the user asks to quit
 running = True
-writtinglatter = ""
+
 screenword = None
 submittedwords = []
-finger12_y = 0
-finger12_x = 0
-finger16_y = None
-finger13_y = None
-finger17_y = None
-finger20_y = None
-finger3_x = None
-finger4_x = None
-finger8_y = None
-finger5_y = None
-finger9_y = None
 cursor_x = 0
 cursor_y = 550
+
+def cursor_ai_pos(l,cursor_y):
+    print(cursor_y)
+    global keyboardLatters
+    if cursor_y < 550 or cursor_y> 572 :
+        return ""
+    if cursor_y >= 550 and cursor_y <= 572:
+        return keyboardLatters[l]
+    return ""
+
+def mouse_click_pos_latter(y_mouse_pos, l):
+    global keyboardLatters
+    
+    if y_mouse_pos < 550 or y_mouse_pos > 572 :
+        return ""
+    # and y_mouse_pos <= 572:
+    if y_mouse_pos >= 550 :
+        return keyboardLatters[l]
+    return ""
+            
+def a_i(hand_landmarks):
+            global writtinglatter  
+            global cursor_y
+            global cursor_x
+            finger12_y =hand_landmarks.landmark[12].y
+            finger16_y = hand_landmarks.landmark[16].y
+            finger20_y = hand_landmarks.landmark[20].y
+            finger8_y = hand_landmarks.landmark[8].y
+            finger4_x = hand_landmarks.landmark[4].x
+            finger13_y = hand_landmarks.landmark[13].y
+            finger9_y = hand_landmarks.landmark[9].y
+            finger5_y = hand_landmarks.landmark[5].y
+            finger17_y =hand_landmarks.landmark[17].y
+            finger3_x = hand_landmarks.landmark[3].x
+            finger12_x = hand_landmarks.landmark[12].x
+            if finger12_y > 0.85 and finger12_y < 1:
+              cursor_x = 0
+              cursor_y = 550
+            if finger12_y < 0.15 and finger12_y > 0:
+              cursor_x = 1050
+              cursor_y = 535
+
+            if finger12_x < 1 and finger12_x > 0.85 and cursor_x < 1050:
+                cursor_x += 42
+            if finger12_x < 0.15 and finger12_x > 0 and cursor_x >=0:
+                    cursor_x -= 42
+            if finger16_y <= finger13_y and finger17_y >= finger20_y and finger8_y <= finger5_y and finger12_y <= finger9_y and finger4_x <= finger3_x and finger3_x != None:
+                l = cursor_x//42
+                word = cursor_ai_pos( l ,cursor_y)
+                print(word)
+                writtinglatter += str(word)
+                print(writtinglatter)
+                screenword = writtingfont.render(writtinglatter, True, (0, 0, 255))
+            screen.blit(cursor_image(cursor_x,cursor_y))
+
 
 
 with open('untitled.json') as jsonfile:
@@ -98,6 +148,7 @@ while running:
     work, frame = cap.read()
 
     screen.fill((0, 0, 0))
+    frame = cv2.flip(frame,1)
     results = hands.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
     frame.flags.writeable = True
 
@@ -109,26 +160,30 @@ while running:
                                       mp_hands.HAND_CONNECTIONS,
                                       mp_drawing_styles.get_default_hand_landmarks_style(),
                                       mp_drawing_styles.get_default_hand_connections_style())
-            finger12_y = results.multi_hand_landmarks[0].landmark[12].y
-            finger16_y = results.multi_hand_landmarks[0].landmark[16].y
-            finger20_y = results.multi_hand_landmarks[0].landmark[20].y
-            finger8_y = results.multi_hand_landmarks[0].landmark[8].y
-            finger4_x = results.multi_hand_landmarks[0].landmark[4].x
-            finger13_y = results.multi_hand_landmarks[0].landmark[13].y
-            finger9_y = results.multi_hand_landmarks[0].landmark[9].y
-            finger5_y = results.multi_hand_landmarks[0].landmark[5].y
-            finger17_y = results.multi_hand_landmarks[0].landmark[17].y
-            finger3_x = results.multi_hand_landmarks[0].landmark[3].x
-            finger12_x = results.multi_hand_landmarks[0].landmark[12].x
+            a_i(results.multi_hand_landmarks[0])
+            
+            # finger12_y = results.multi_hand_landmarks[0].landmark[12].y
+            # finger16_y = results.multi_hand_landmarks[0].landmark[16].y
+            # finger20_y = results.multi_hand_landmarks[0].landmark[20].y
+            # finger8_y = results.multi_hand_landmarks[0].landmark[8].y
+            # finger4_x = results.multi_hand_landmarks[0].landmark[4].x
+            # finger13_y = results.multi_hand_landmarks[0].landmark[13].y
+            # finger9_y = results.multi_hand_landmarks[0].landmark[9].y
+            # finger5_y = results.multi_hand_landmarks[0].landmark[5].y
+            # finger17_y = results.multi_hand_landmarks[0].landmark[17].y
+            # finger3_x = results.multi_hand_landmarks[0].landmark[3].x
+            # finger12_x = results.multi_hand_landmarks[0].landmark[12].x
 
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
             x_mouse = pos[0]
-            print(x_mouse)
+            # print(x_mouse)
             y_mouse_pos = pos[1]
             l = x_mouse//42
             word = mouse_click_pos_latter(y_mouse_pos, l)
+            print ("type(writtinglatter", writtinglatter)
+            print ("typeword", word)
             writtinglatter += word
             if x_mouse > 1040 and x_mouse < 1100 and y_mouse_pos < 550 and y_mouse_pos > 537:
                 writtinglatter = ""
@@ -166,13 +221,6 @@ while running:
     pygame.draw.line(screen, (255, 255, 255),
                      (WINDOW_W//2, 80), (WINDOW_W//2, 480), 10)
     pygame.draw.line(screen, (255, 255, 255), (200, 140), (900, 140), 10)
-    if finger16_y <= finger13_y and finger17_y >= finger20_y and finger8_y <= finger5_y and finger12_y <= finger9_y and finger4_x <= finger3_x and finger3_x != None:
-        cursor_x = x_mouse
-        cursor_y = y_mouse_pos
-        l = x_mouse//42
-        word = mouse_click_pos_latter(y_mouse_pos, l)
-        writtinglatter += word
-        screenword = writtingfont.render(writtinglatter, True, (0, 0, 255))
     if lottery_latter != None:
         screen.blit(letterscreen, (600, 200))
     if screenword != None:
@@ -181,25 +229,14 @@ while running:
         img = lattersfont.render(keyboardLatters[l], True, (5, 200, 100))
         screen.blit(img, (15+l*42, 550))
     screen.blit(cursor_image, (cursor_x, cursor_y))
-    if finger12_y > 0.85 and finger12_y < 1:
-        cursor_x = 0
-        cursor_y = 550
-    if finger12_y > 0.15 and finger12_y > 0:
-        cursor_x = 1050
-        cursor_y = 535
-
-    if finger12_x < 1 and finger12_x > 0.85 and cursor_x > 15:
-        cursor_x -= 42
-    if finger12_x < 0.15 and finger12_x > 0 and cursor_x < 1050:
-        cursor_x += 42
-
+    
         # if
         # for i in jsonData:
         #     if i["char"] =="a"and i ["type"]==1 :
         #         for word in i["words"]:
         #             if word==submittedwords[0]:
         #                 print ("good job")
-    cv2.imshow("my ugly face", cv2.flip(frame, 1))
+    # cv2.imshow("my ugly face", frame)
     if cv2.waitKey(1) & 0xff == ord("q"):
         break
 
