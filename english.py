@@ -76,7 +76,7 @@ screenword = None
 submittedwords = []
 finger13_y = 0
 finger13_x = 0
-cursor_x = 17
+cursor_x = 15
 
 
 with open('untitled.json') as jsonfile:
@@ -105,7 +105,6 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
-
             x_mouse = pos[0]
             print(x_mouse)
             y_mouse_pos = pos[1]
@@ -157,9 +156,9 @@ while running:
         screen.blit(img, (15+l*42, 550))
     screen.blit(cursor_image, (cursor_x, 561))
     # if finger13_y>0.75 and finger13_y<1:
-    if finger13_x < 1 and finger13_x > 0.65 and cursor_x >= 0:
+    if finger13_x < 1 and finger13_x > 0.85 and cursor_x > 20:
         cursor_x -= 42
-    if finger13_x < 0.45 and finger13_x > 0 and cursor_x <= 1100:
+    if finger13_x < 0.15 and finger13_x > 0 and cursor_x <= 1100:
         cursor_x += 42
         # if
         # for i in jsonData:
