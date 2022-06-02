@@ -24,7 +24,7 @@ pygame.display.set_caption("ארץ עיר")
 cursor_image = pygame.image.load("הורדה.png")
 # bk_image=pygame.transform.scale(bk_image,(1200,800))
 # write_image = pygame.transform.scale(write_image, (1000, 220))
-cursor_image = pygame.transform.scale(cursor_image, (70, 40))
+cursor_image = pygame.transform.scale(cursor_image, (60, 40))
 lotteryfont = pygame.font.SysFont('david', 80)
 lattersfont = pygame.font.SysFont('david', 24)
 writtingfont = pygame.font.SysFont('jacob', 80)
@@ -33,7 +33,7 @@ objectsfont = pygame.font.SysFont('jacob', 80)
 mp_drawing = mp.solutions.drawing_utils
 cap = cv2.VideoCapture(0)
 mp_hands = mp.solutions.hands
-hands = mp_hands.Hands(max_num_hands=2)
+hands = mp_hands.Hands(max_num_hands=1)
 mp_drawing_styles = mp.solutions.drawing_styles
 latters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l",
            "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
@@ -76,7 +76,8 @@ screenword = None
 submittedwords = []
 finger13_y = 0
 finger13_x = 0
-cursor_x = 15
+cursor_x = 0
+cursor_y = 550
 
 
 with open('untitled.json') as jsonfile:
@@ -154,12 +155,19 @@ while running:
     for l in range(len(keyboardLatters)):
         img = lattersfont.render(keyboardLatters[l], True, (5, 200, 100))
         screen.blit(img, (15+l*42, 550))
-    screen.blit(cursor_image, (cursor_x, 561))
-    # if finger13_y>0.75 and finger13_y<1:
-    if finger13_x < 1 and finger13_x > 0.85 and cursor_x > 20:
+    screen.blit(cursor_image, (cursor_x, cursor_y))
+    if finger13_y > 0.85 and finger13_y < 1:
+        cursor_x = 0
+        cursor_y = 550
+    elif finger13_y > 0.15 and finger13_y > 0:
+        cursor_x = 1050
+        cursor_y = 535
+
+    if finger13_x < 1 and finger13_x > 0.85 and cursor_x > 15:
         cursor_x -= 42
-    if finger13_x < 0.15 and finger13_x > 0 and cursor_x <= 1100:
+    if finger13_x < 0.15 and finger13_x > 0 and cursor_x < 1050:
         cursor_x += 42
+
         # if
         # for i in jsonData:
         #     if i["char"] =="a"and i ["type"]==1 :
