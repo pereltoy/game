@@ -101,27 +101,27 @@ def a_i(hand_landmarks):
             finger16_y = hand_landmarks.landmark[16].y
             finger20_y = hand_landmarks.landmark[20].y
             finger8_y = hand_landmarks.landmark[8].y
-            finger4_x = hand_landmarks.landmark[4].x
+            
             finger13_y = hand_landmarks.landmark[13].y
             finger9_y = hand_landmarks.landmark[9].y
             finger5_y = hand_landmarks.landmark[5].y
             finger17_y =hand_landmarks.landmark[17].y
-            finger3_x = hand_landmarks.landmark[3].x
+           
             finger12_x = hand_landmarks.landmark[12].x
-            if finger12_y > 0.75 and finger12_y < 1:
+            if finger12_y > 0.5 and finger12_y < 1:
               cursor_x = 0
               cursor_y = 550
-            if finger12_y < 0.25 and finger12_y > 0:
+            if finger12_y < 0.5 and finger12_y > 0:
               cursor_x = 1050
               cursor_y = 535
             
-            if finger12_x < 1 and finger12_x > 0.75 :
+            if finger12_x < 1 and finger12_x > 0.5 :
                if cursor_y==550 and cursor_x<1050: 
                 cursor_x += 42
                 time.sleep(0.5)
                if cursor_y==535 and cursor_x==1050:   
                 cursor_x=1050
-            if finger12_x < 0.15 and finger12_x > 0 :
+            if finger12_x < 0.5 and finger12_x > 0 :
               if cursor_y==550 and cursor_x>15:
                 cursor_x -= 42
                 time.sleep(0.5)
@@ -131,7 +131,7 @@ def a_i(hand_landmarks):
             
 
             
-            if finger16_y >= finger13_y and finger17_y <= finger20_y and finger8_y >= finger5_y and finger12_y >= finger9_y and finger4_x >= finger3_x and finger3_x != None:
+            if finger16_y >= finger13_y and finger17_y <= finger20_y and finger8_y >= finger5_y and finger12_y >= finger9_y:
                 if cursor_y==535 and cursor_x==1050:
                     writtinglatter=""
                 if  cursor_y==550:     
