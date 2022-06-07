@@ -36,21 +36,8 @@ cap = cv2.VideoCapture(0)
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(max_num_hands=1)
 mp_drawing_styles = mp.solutions.drawing_styles
-latters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l",
-           "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
-keyboardLatters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
-                   "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
-# finger12_y = None
-# finger12_x = None
-# finger16_y = None
-# finger13_y = None
-# finger17_y = None
-# finger20_y = None
-# finger3_x = None
-# finger4_x = None
-# finger8_y = None
-# finger5_y = None
-# finger9_y = None
+latters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+keyboardLatters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k","l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
 hand_landmarks=None
 writtinglatter = ""
 
@@ -101,11 +88,15 @@ def mouse_click_pos_latter(y_mouse_pos, l):
     if y_mouse_pos >= 550 :
         return keyboardLatters[l]
     return ""
+with open('untitled.json') as jsonfile:
+    jsonData = json.loads(jsonfile.read().encode('utf8'))
             
 def a_i(hand_landmarks):
             global writtinglatter  
             global cursor_y
             global cursor_x
+            global submittedwords
+            global score
             finger12_y =hand_landmarks.landmark[12].y
             finger16_y = hand_landmarks.landmark[16].y
             finger20_y = hand_landmarks.landmark[20].y
@@ -117,30 +108,57 @@ def a_i(hand_landmarks):
             finger17_y =hand_landmarks.landmark[17].y
             finger3_x = hand_landmarks.landmark[3].x
             finger12_x = hand_landmarks.landmark[12].x
-            if finger12_y > 0.85 and finger12_y < 1:
+            if finger12_y > 0.75 and finger12_y < 1:
               cursor_x = 0
               cursor_y = 550
-            if finger12_y < 0.15 and finger12_y > 0:
+            if finger12_y < 0.25 and finger12_y > 0:
               cursor_x = 1050
               cursor_y = 535
-
-            if finger12_x < 1 and finger12_x > 0.85 and cursor_x < 1050:
+            
+            if finger12_x < 1 and finger12_x > 0.75 :
+               if cursor_y==550 and cursor_x<1050: 
                 cursor_x += 42
-            if finger12_x < 0.15 and finger12_x > 0 and cursor_x >=0:
-                    cursor_x -= 42
-            if finger16_y <= finger13_y and finger17_y >= finger20_y and finger8_y <= finger5_y and finger12_y <= finger9_y and finger4_x <= finger3_x and finger3_x != None:
-                l = cursor_x//42
-                word = cursor_ai_pos( l ,cursor_y)
-                print(word)
-                writtinglatter += str(word)
-                print(writtinglatter)
-                screenword = writtingfont.render(writtinglatter, True, (0, 0, 255))
-            screen.blit(cursor_image(cursor_x,cursor_y))
+                time.sleep(0.5)
+               if cursor_y==535 and cursor_x==1050:   
+                cursor_x=1050
+            if finger12_x < 0.15 and finger12_x > 0 :
+              if cursor_y==550 and cursor_x>15:
+                cursor_x -= 42
+                time.sleep(0.5)
+              if cursor_y==535 and cursor_x==1050:
+                  cursor_x=15
+
+            
+
+            
+            if finger16_y >= finger13_y and finger17_y <= finger20_y and finger8_y >= finger5_y and finger12_y >= finger9_y and finger4_x >= finger3_x and finger3_x != None:
+                if cursor_y==535 and cursor_x==1050:
+                    writtinglatter=""
+                if  cursor_y==550:     
+                    l = cursor_x//42
+                    word = cursor_ai_pos( l ,cursor_y)                    
+                    writtinglatter += str(word)
+                    print(writtinglatter)
+                    time.sleep(0.5)
+                
+                if cursor_y==535 and cursor_x==15:
+                    print (submit)
+                    submittedwords.append(writtinglatter)
+                    for i in jsonData:
+                     if i["char"] == lottery_latter and i["type"] == 1:
+                        for word in i["words"]:
+                            if word == submittedwords[0]:
+                                score += 25
+                                object7 = objectsfont.render(
+                                    str(score), False, (255, 255, 255))
+                                submittedwords.pop(0)
+            screenword = writtingfont.render(writtinglatter, True, (0, 0, 255))
+            # screen.blit(cursor_image(cursor_x,cursor_y))
 
 
 
-with open('untitled.json') as jsonfile:
-    jsonData = json.loads(jsonfile.read().encode('utf8'))
+# with open('untitled.json') as jsonfile:
+#     jsonData = json.loads(jsonfile.read().encode('utf8'))
     # print(jsonData)
 
 
@@ -217,6 +235,7 @@ while running:
     screen.blit(object4, (200, 80))
     screen.blit(object6, (0, 0))
     screen.blit(object7, (165, 0))
+    
 
     pygame.draw.line(screen, (255, 255, 255),
                      (WINDOW_W//2, 80), (WINDOW_W//2, 480), 10)
