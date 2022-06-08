@@ -1,3 +1,5 @@
+# libaries
+from imp import load_module
 from tracemalloc import stop
 from turtle import Screen, window_height, window_width
 import pygame
@@ -14,17 +16,15 @@ WINDOW_W = 1100
 WINDOW_H = 600
 WINDOW_SIZE = (WINDOW_W, WINDOW_H)
 
+# strart engines
 pygame.init()
 clock = pygame.time.Clock()
 pygame.font.init()
 
+# load
 screen = pygame.display.set_mode(WINDOW_SIZE)
 pygame.display.set_caption("ארץ עיר")
-# bk_image=pygame.image.load("back.jpg")
-# write_image = pygame.image.load("images.jpg")
 cursor_image = pygame.image.load("הורדה.png")
-# bk_image=pygame.transform.scale(bk_image,(1200,800))
-# write_image = pygame.transform.scale(write_image, (1000, 220))
 cursor_image = pygame.transform.scale(cursor_image, (60, 40))
 lotteryfont = pygame.font.SysFont('david', 80)
 lattersfont = pygame.font.SysFont('david', 24)
@@ -36,41 +36,33 @@ cap = cv2.VideoCapture(0)
 mp_hands = mp.solutions.hands
 hands = mp_hands.Hands(max_num_hands=1)
 mp_drawing_styles = mp.solutions.drawing_styles
-latters = ["a","b","c"]
-# , "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
+
+# virables
+latters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
 keyboardLatters = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k","l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"]
 hand_landmarks=None
 writtinglatter = ""
-
-
-
-
-
-deleteletter = "delete"
-okletter = "submit"
-object1 = "letter"
-object3 = "country"
-score = 0
-object5 = "score:"
-eraser = delete_okfont.render(deleteletter, False, (255, 255, 255))
-submit = delete_okfont.render(okletter, False, (255, 255, 255))
-object2 = objectsfont.render(object1, False, (255, 255, 255))
-object4 = objectsfont.render(object3, False, (255, 255, 255))
-object6 = objectsfont.render(object5, False, (255, 255, 255))
-object7 = objectsfont.render(str(score), False, (255, 255, 255))
 pos = None
 lottery_latter = None
 latter_font = None
 step = WINDOW_W//len(keyboardLatters)
 latter_pos = -1
-# Run until the user asks to quit
 running = True
-
 screenword = None
 submittedwords = []
 cursor_x = 0
 cursor_y = 550
 
+score = 0
+# fonts
+eraser= delete_okfont.render("delete", False, (255, 255, 255))
+submit= delete_okfont.render("submit", False, (255, 255, 255))
+object1= objectsfont.render("letter", False, (255, 255, 255))
+object2= objectsfont.render("country", False, (255, 255, 255))
+object3= objectsfont.render("score:", False, (255, 255, 255))
+object4= objectsfont.render(str(score), False, (255, 255, 255))
+
+# functions
 def cursor_ai_pos(l,cursor_y):
     global keyboardLatters
     if cursor_y < 550 or cursor_y> 572 :
@@ -108,72 +100,75 @@ def a_i(hand_landmarks):
             finger17_y =hand_landmarks.landmark[17].y
            
             finger12_x = hand_landmarks.landmark[12].x
-            if finger12_y > 0.5 and finger12_y < 1:
-              cursor_x = 0
+            if finger12_y > 0.75 and finger12_y < 1:
+              cursor_x=0
+              print(cursor_x)
               cursor_y = 550
-            if finger12_y < 0.5 and finger12_y > 0:
+            if finger12_y < 0.25 and finger12_y > 0:
               cursor_x = 1050
               cursor_y = 535
             
-            if finger12_x < 1 and finger12_x > 0.5 :
+            if finger12_x < 1 and finger12_x > 0.75 :
                if cursor_y==550 and cursor_x<1050: 
                 cursor_x += 42
-                time.sleep(0.5)
+                print(cursor_x)
+                time.sleep(0.2)
                if cursor_y==535 and cursor_x==1050:   
                 cursor_x=1050
-            if finger12_x < 0.5 and finger12_x > 0 :
+            if finger12_x < 0.25 and finger12_x > 0 :
               if cursor_y==550 and cursor_x>15:
                 cursor_x -= 42
-                time.sleep(0.5)
+                time.sleep(0.2)
               if cursor_y==535 and cursor_x==1050:
-                  cursor_x=15        
+                  cursor_x=15 
+                  cursor_y=535       
             if finger16_y >= finger13_y and finger17_y <= finger20_y and finger8_y >= finger5_y and finger12_y >= finger9_y:
                 if cursor_y==535 and cursor_x==1050:
                     writtinglatter=""
+                    return "",score
                 if  cursor_y==550:     
                     l = cursor_x//42
-                    word = cursor_ai_pos( l ,cursor_y)                    
-                    writtinglatter += str(word)
-                    print(writtinglatter)
+                    return cursor_ai_pos( l ,cursor_y),score                    
+                    
+
                     time.sleep(0.5)
                 
                 if cursor_y==535 and cursor_x==15:
-                    print ("submit")
-                    submittedwords.append(writtinglatter)
-                    writtinglatter=""
                     for i in jsonData:
                      if i["char"] == lottery_latter and i["type"] == 1:
                         for word in i["words"]:
-                            if word == submittedwords[0]:
-                                score += 25
-                                object7 = objectsfont.render(
-                                    str(score), False, (255, 255, 255))
-                                submittedwords.pop(0)
-            screenword = writtingfont.render(writtinglatter, True, (0, 0, 255))
-            # screen.blit(cursor_image(cursor_x,cursor_y))
+                            if word == writtinglatter:
+                                writtinglatter=""
+                                score +=25
+                                return "",score 
+                              
+            return "",score
+                                
 
 # with open('untitled.json') as jsonfile:
 #     jsonData = json.loads(jsonfile.read().encode('utf8'))
     # print(jsonData)
 
-
+# display
 while running:
     work, frame = cap.read()
-
+# hands
     screen.fill((0, 0, 0))
     frame = cv2.flip(frame,1)
     results = hands.process(cv2.cvtColor(frame, cv2.COLOR_BGR2RGB))
-    frame.flags.writeable = True
-
-    # for hand_landmarks in results.multi_hand_landmarks:
-
     if results.multi_hand_landmarks:
         for hand_landmarks in results.multi_hand_landmarks:
             mp_drawing.draw_landmarks(frame, hand_landmarks,
                                       mp_hands.HAND_CONNECTIONS,
                                       mp_drawing_styles.get_default_hand_landmarks_style(),
                                       mp_drawing_styles.get_default_hand_connections_style())
-            a_i(results.multi_hand_landmarks[0])
+            word,score1=a_i(results.multi_hand_landmarks[0])
+            writtinglatter += str(word)
+            score =score1
+            time.sleep(0.1)
+            screenword = writtingfont.render(writtinglatter, True, (0, 0, 255))
+            object7 = objectsfont.render(str(score), False, (255, 255, 255))
+# events
     for event in pygame.event.get():
         if event.type == pygame.MOUSEBUTTONDOWN:
             pos = pygame.mouse.get_pos()
@@ -197,7 +192,7 @@ while running:
                                     str(score), False, (255, 255, 255))
                                 submittedwords.pop(0)
 
-                   # writtinglatter+= stop
+                   
         if event.type == pygame.QUIT:
             running = False
         elif event.type == pygame.KEYDOWN:
@@ -207,13 +202,13 @@ while running:
                 letterscreen = lotteryfont.render(
                     lottery_latter, False, (255, 255, 255))
                 # llottery=myfont.render(str(lottery_latter),True,(0,0,0))
+#blit
     screen.blit(eraser, (1040, 537))
     screen.blit(submit, (1, 537))
-    screen.blit(object2, (600, 80))
-    screen.blit(object4, (200, 80))
-    screen.blit(object6, (0, 0))
-    screen.blit(object7, (165, 0))
-    
+    screen.blit(object1, (600, 80))
+    screen.blit(object2, (200, 80))
+    screen.blit(object3, (0, 0))
+    screen.blit(object4, (165, 0))
 
     pygame.draw.line(screen, (255, 255, 255),
                      (WINDOW_W//2, 80), (WINDOW_W//2, 480), 10)
@@ -226,10 +221,9 @@ while running:
         img = lattersfont.render(keyboardLatters[l], True, (5, 200, 100))
         screen.blit(img, (15+l*42, 550))
     screen.blit(cursor_image, (cursor_x, cursor_y))
-    
-        
-    # cv2.imshow("my ugly face", frame)
+       
     if cv2.waitKey(1) & 0xff == ord("q"):
+        
         break
 
     pygame.display.flip()
